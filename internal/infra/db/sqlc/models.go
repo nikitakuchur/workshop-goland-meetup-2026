@@ -52,3 +52,22 @@ type Species struct {
 	CanonicalName  string    `db:"canonical_name" json:"canonical_name"`
 	VernacularName string    `db:"vernacular_name" json:"vernacular_name"`
 }
+
+type Weather struct {
+	ID                    uuid.UUID `db:"id" json:"id"`
+	CreatedAt             time.Time `db:"created_at" json:"created_at"`
+	UpdatedAt             time.Time `db:"updated_at" json:"updated_at"`
+	ObservedAt            time.Time `db:"observed_at" json:"observed_at"`
+	TemperatureActual     float64   `db:"temperature_actual" json:"temperature_actual"`
+	TemperatureApparent   float64   `db:"temperature_apparent" json:"temperature_apparent"`
+	PrecipitationTotal    float64   `db:"precipitation_total" json:"precipitation_total"`
+	PrecipitationRain     float64   `db:"precipitation_rain" json:"precipitation_rain"`
+	PrecipitationSnowfall float64   `db:"precipitation_snowfall" json:"precipitation_snowfall"`
+	WindSpeed             float64   `db:"wind_speed" json:"wind_speed"`
+	WindGusts             float64   `db:"wind_gusts" json:"wind_gusts"`
+	WindDirection         int64     `db:"wind_direction" json:"wind_direction"`
+	ConditionCode         int64     `db:"condition_code" json:"condition_code"`
+	ConditionDescription  string    `db:"condition_description" json:"condition_description"`
+	CloudCover            int64     `db:"cloud_cover" json:"cloud_cover"`
+	Humidity              int64     `db:"humidity" json:"humidity"`
+}

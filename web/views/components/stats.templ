@@ -1,0 +1,37 @@
+package components
+
+import (
+	"strconv"
+	"workshop/internal/domain/sighting"
+)
+
+templ Stats(sum sighting.Summary) {
+	<dl class="stats">
+		@stat("Sightings", sum.Sightings)
+		@stat("Species", sum.Species)
+		@stat("Countries", sum.Countries)
+		@stat("Photos", sum.Media)
+	</dl>
+}
+
+templ stat(label string, n int) {
+	<div class="stat">
+		<dt>{ label }</dt>
+		<dd data-count={ strconv.Itoa(n) }>{ strconv.Itoa(n) }</dd>
+	</div>
+}
+
+templ Marquee(top []sighting.Tally) {
+	if len(top) > 0 {
+		<div class="marquee" role="region" aria-label="Most spotted species">
+			<ul class="marquee__track">
+				for _, t := range top {
+					<li class="marquee__item">{ t.Name } <span>× { strconv.Itoa(t.Count) }</span></li>
+				}
+				for _, t := range top {
+					<li class="marquee__item" aria-hidden="true">{ t.Name } <span>× { strconv.Itoa(t.Count) }</span></li>
+				}
+			</ul>
+		</div>
+	}
+}

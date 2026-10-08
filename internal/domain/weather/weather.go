@@ -47,13 +47,15 @@ var (
 
 // Find returns the weather with the given ID, or ErrNotFound.
 func (s Service) Find(ctx context.Context, id uuid.UUID) (Weather, error) {
-	// TODO: Implement
-	return Weather{}, errors.New("weather: Find not implemented")
+	return s.repo.Find(ctx, id)
 }
 
 // Create validates the params and assigns the record its identity
 // before handing it to the repository.
 func (s Service) Create(ctx context.Context, params CreateParams) (Weather, error) {
-	// TODO: Implement
-	return Weather{}, errors.New("weather: Create not implemented")
+	if err := params.Validate(); err != nil {
+		return Weather{}, err
+	}
+
+	return s.repo.Create(ctx, uuid.New(), params)
 }

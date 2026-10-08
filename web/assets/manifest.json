@@ -1,0 +1,8 @@
+{
+	"name": "Spotted!",
+	"short_name": "Spotted!",
+	"icons": [{ "src": "/assets/images/logo.svg", "sizes": "any", "type": "image/svg+xml" }],
+	"theme_color": "#F7F6FC",
+	"background_color": "#F7F6FC",
+	"display": "standalone"
+}

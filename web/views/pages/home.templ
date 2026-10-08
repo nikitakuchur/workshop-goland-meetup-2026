@@ -1,11 +1,65 @@
 package pages
 
-import "workshop/internal/domain/sighting"
+import (
+	"workshop/internal/domain/sighting"
+	"workshop/web/views/components"
+	"workshop/web/views/layout"
+)
 
 templ Home(sightings []sighting.Sighting) {
-	// TODO: Implement
-	// 1. Wrap the page in layout.Base, giving it a title.
-	// 2. Say so when there are no sightings, and show the total when there are.
-	// 3. Render a components.SightingCard for each sighting.
-	// Think about error handling.
+	@layout.Base(layout.BaseProps{
+		Title: "Spotted! · Wildlife sightings",
+	}) {
+		<section class="hero" aria-labelledby="hero-title">
+			<span class="hero__blob hero__blob--a" aria-hidden="true"></span>
+			<span class="hero__blob hero__blob--b" aria-hidden="true"></span>
+			<p class="hero__eyebrow">Wildlife, caught in the act</p>
+			<h1 id="hero-title" class="hero__title" data-boom>Spotted!</h1>
+			<p class="hero__lead">Every lion, whale and crocodile someone saw, photographed and logged, in one place.</p>
+			if len(sightings) > 0 {
+				@components.Stats(sighting.Summarise(sightings))
+			}
+			<div class="hero__actions">
+				<a class="button" href="#map">Explore the map</a>
+				<a class="button button--ghost" href="#sightings">See every sighting</a>
+			</div>
+		</section>
+		@components.Marquee(components.TopSpecies(sightings, 12))
+		<section id="map" class="section" aria-labelledby="map-title">
+			<header class="section__header pop">
+				<h2 id="map-title" class="section__title">Where they were spotted</h2>
+				<p class="section__lead">Zoom in to break the clusters apart, then jump to any record.</p>
+			</header>
+			if len(sightings) == 0 {
+				<p class="empty">Nothing to map yet.</p>
+			} else {
+				<div class="map-panel pop">
+					@components.Map(components.MapProps{
+						Points:  components.MapPoints(sightings),
+						Cluster: true,
+						Label:   "Where the sightings were",
+					})
+				</div>
+			}
+		</section>
+		<section id="sightings" class="section" aria-labelledby="sightings-title">
+			<header class="section__header pop">
+				<h2 id="sightings-title" class="section__title">Every sighting</h2>
+				if len(sightings) > 0 {
+					<p class="section__lead">{ len(sightings) } records, newest first.</p>
+				}
+			</header>
+			if len(sightings) == 0 {
+				<p class="empty">No sightings have been ingested yet.</p>
+			} else {
+				<ul class="sightings">
+					for _, s := range sightings {
+						<li class="pop" data-spark>
+							@components.SightingCard(s)
+						</li>
+					}
+				</ul>
+			}
+		</section>
+	}
 }

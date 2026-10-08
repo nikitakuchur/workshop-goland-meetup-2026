@@ -7,9 +7,16 @@ import (
 
 templ Error(message string, code int) {
 	@layout.Base(layout.BaseProps{
-		Title: "Error " + strconv.Itoa(code),
+		Title: "Error " + strconv.Itoa(code) + " · Spotted!",
 	}) {
-		<h1>{ strconv.Itoa(code) }</h1>
-		<p>{ message }</p>
+		<section class="hero hero--error">
+			<span class="hero__blob hero__blob--a" aria-hidden="true"></span>
+			<span class="hero__blob hero__blob--b" aria-hidden="true"></span>
+			<h1 class="hero__title" data-boom>{ strconv.Itoa(code) }</h1>
+			<p class="hero__lead">{ message }</p>
+			<div class="hero__actions">
+				<a class="button" href="/">Back home</a>
+			</div>
+		</section>
 	}
 }

@@ -2,6 +2,7 @@ package components
 
 import (
 	"cmp"
+	"strconv"
 	"workshop/internal/domain/sighting"
 )
 
@@ -9,21 +10,31 @@ templ Gallery(items []sighting.Media) {
 	if len(items) == 0 {
 		<p class="gallery__empty">No media recorded.</p>
 	} else {
-		<ul class="gallery">
+		<ul
+			class="gallery"
+			if len(items) > 1 {
+				tabindex="0"
+				aria-label="Media, scroll sideways for more"
+			}
+		>
 			for _, m := range items {
-				<!-- Items -->
 				<li class="gallery__item">
-					if m.Type == "StillImage" {
-						<img src={ m.URL } alt={ altText(m) } loading="lazy"/>
-					} else {
-						<a href={ templ.URL(m.URL) } rel="noopener">{ altText(m) }</a>
-					}
-					if m.Creator != "" {
-						<figcaption class="gallery__credit">{ m.Creator }</figcaption>
-					}
+					<figure>
+						if m.Type == "StillImage" {
+							<img src={ m.URL } alt={ altText(m) } loading="lazy" decoding="async"/>
+						} else {
+							<a class="gallery__file" href={ templ.URL(m.URL) } rel="noopener">{ altText(m) }</a>
+						}
+						if m.Creator != "" {
+							<figcaption class="gallery__credit">© { m.Creator }</figcaption>
+						}
+					</figure>
 				</li>
 			}
 		</ul>
+		if len(items) > 1 {
+			<p class="gallery__count" aria-hidden="true">{ "+" + strconv.Itoa(len(items)-1) + " more" }</p>
+		}
 	}
 }
 
